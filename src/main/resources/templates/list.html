@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www/thymeleaf.org">
+<head>
+    <title>Welcome Page</title>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=UTF-8">
+    <link href="../static/css/mystyle.css" th:href="@{/css/mystyle.css}" rel="stylesheet"/>
+</head>
+
+<body>
+	<div th:include="header :: headerA"></div>
+    <div class="content">
+        <table>
+        <h1 >ホテル琴鈴 顧客リスト</h1>
+        <table>
+            <tr><th>ID</th><th>名前</th><th>パスワード</th><th>メール</th>
+        <tr th:each="obj : ${datalist}">
+            <td th:text="${obj.id}"></td>
+            <td th:text="${obj.name}"></td>
+            <td th:text="${obj.psw}"></td>
+            <td th:text="${obj.mail}"></td>
+        </tr>
+        </table>
+    </div>
+</body>
+</html>

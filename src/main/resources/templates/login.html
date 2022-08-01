@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www/thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Login</title>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=UTF-8">
+    <link href="../static/css/mystyle.css" th:href="@{/css/mystyle.css}" rel="stylesheet"/>
+</head>
+
+<body>
+	<div th:include="header :: headerA"></div>
+    <td><a th:href="@{/}">Home</a></td>
+    <br/>
+    <div class="content">
+        <table>
+        <h1>ログイン</h1>
+            <form method="post" action="/login" >
+                <tr><td><label for="name">お名前</label></td>
+                    <td><input type="text" id="name" name="name" th:value="${login_name}" /></td></tr>
+                <tr><td><label for="psw">パスワード</label></td>
+                    <td><input type="password" id="psw" name="psw" th:value="${login_psw}" /></td></tr>
+                <tr><td><input type="submit"  value="ログイン" class="button"></td></tr>
+                <p th:text="${msg}" />
+            </form>
+        </table>
+    </div>
+</body>
+</html>

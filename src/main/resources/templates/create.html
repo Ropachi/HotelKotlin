@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www/thymeleaf.org">
+<head>
+    <title>Create Accout</title>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=UTF-8">
+    <link href="../static/css/mystyle.css" th:href="@{/css/mystyle.css}" rel="stylesheet"/>
+</head>
+
+<body>
+	<div th:include="header :: headerA"></div>
+        <table>
+            <tr>
+				<td><a th:href="@{/}">Home</a></td>
+            </tr>
+        </table>
+    <br/>
+
+    <div class="content">
+        <p th:text="${msg}" id="error"></p>
+        <table>
+        <h1 >アカウント作成</h1>
+        <form method="post" action="/create" th:object="${formModel}">
+            <input type="hidden" name="id" th:value="*{id}" />
+            <tr><td><label for="name">お名前(必携 20文字以内)</label></td>
+                <td><input type="text" id="name" name="name" th:value="*{name}" />
+                <div th:if="${#fields.hasErrors('name')}"
+                    th:errors="*{name}" th:errorclass="err">
+                </div></td></tr>
+
+            <tr><td><label for="psw">パスワード(必携 3〜10文字)</label></td>
+                <td><input type="password" id="psw" name="psw" th:value="*{psw}" />
+                <div th:if="${#fields.hasErrors('psw')}"
+                    th:errors="*{psw}" th:errorclass="err">
+                </div></td></tr>
+
+            <tr><td><label for="mail">連絡用メールアドレス(必携)</label></td>
+                <td><input type="text" id="mail" name="mail" th:value="*{mail}" />
+                <div th:if="${#fields.hasErrors('mail')}"
+                    th:errors="*{mail}" th:errorclass="err">
+                </div></td></tr>
+
+            <tr><td></td><td><input type="submit"  value="登録" class="button"/></td></tr>
+        </form>
+        </table>
+    </div>
+</body>
+</html>

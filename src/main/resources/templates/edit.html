@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www/thymeleaf.org">
+<head>
+    <title>Edit Account</title>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=UTF-8">
+    <link href="../static/css/mystyle.css" th:href="@{/css/mystyle.css}" rel="stylesheet"/>
+</head>
+
+<body>
+	<div th:include="header :: headerA"></div>
+        <div th:if="${logname} != 'kiOYuT49HiJ8'">
+            <h3 th:text="${logname} + '様'"/>
+        </div>
+
+        <table>
+            <tr>
+                <td><a th:href="@{/}">Home</a></td>
+                <td><a th:href="@{/createord}">ホテル予約</a></td>
+                <td><a th:href="@{/logout}">ログアウト</a></td>
+            </tr>
+        </table><br/>
+
+    <div class="content">
+        <h1>アカウント修正</h1>
+        <table>
+            <form method="post" action="/edit" th:object="${formModel}">
+                <p th:text="'現在のお名前 : ' + *{name}"/>
+                <p th:text="'現在のメールアドレス : ' + *{mail}"/>
+                <input type="hidden" name="id" th:value="*{id}" />
+
+                <tr><td><label for="name">お名前(必携 20文字以内)</label></td>
+                    <td><input type="text" id="name" name="name" th:value="*{name}" th:errorclass="err"/>
+                    <div th:if="${#fields.hasErrors('name')}"
+                        th:errors="*{name}" th:errorclass="err">
+                    </div></td></tr>
+
+                <tr><td><label for="psw">パスワード(必携 3〜10文字)</label></td>
+                    <td><input type="password" id="psw" name="psw" th:value="*{psw}"  th:errorclass="err"/>
+                    <div th:if="${#fields.hasErrors('psw')}"
+                        th:errors="*{psw}" th:errorclass="err">
+                    </div></td></tr>
+
+                <tr><td><label for="mail">連絡用メールアドレス(必携)</label></td>
+                    <td><input type="text" id="mail" name="mail" th:value="*{mail}"  th:errorclass="err"/>
+                    <div th:if="${#fields.hasErrors('mail')}"
+                        th:errors="*{mail}" th:errorclass="err">
+                    </div></td></tr>
+
+                <tr><td><input type="submit" value="修正" class="button"/></td></tr>
+                <p th:text="${msg}" />
+            </form>
+        </table>
+    </div>
+</body>
+</html>

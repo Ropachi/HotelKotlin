@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www/thymeleaf.org">
+<head>
+    <title>Course list</title>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=UTF-8">
+    <link href="../static/css/mystyle.css" th:href="@{/css/mystyle.css}" rel="stylesheet"/>
+</head>
+
+<body>
+	<div th:include="header :: headerA"></div>
+    <div class="content">
+        <p >ホテル琴鈴 現在の全予約リスト</p>
+        <table>
+        <tr><th>CourseID</th><th>MyDataID</th><th>City</th><th>Plan</th><th>Date</th>
+        <tr th:each="obj : ${datalist}">
+            <td th:text="${obj.ordid}"></td>
+            <td th:text="${obj.myid}"></td>
+            <td th:text="${obj.ordcity}"></td>
+            <td th:text="${obj.ordtype}"></td>
+            <td th:text="${obj.orddate}"></td>
+        </tr>
+        </table>
+    </div>
+</body>
+</html>

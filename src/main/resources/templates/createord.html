@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www/thymeleaf.org">
+<head>
+    <title>ホテル予約</title>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=UTF-8">
+    <link href="../static/css/mystyle.css" th:href="@{/css/mystyle.css}" rel="stylesheet"/>
+</head>
+
+<body>
+	<div th:include="header :: headerA"></div>
+            <h3 th:text="${logname} + '様'"/>
+        <table>
+            <tr>
+				<td><a th:href="@{/}">戻る</a></td>
+                <td><a th:href="@{/edit}">アカウント修正</a></td>
+                <td><a th:href="@{/logout}">ログアウト</a></td>
+            </tr>
+        </table>
+    <br/>
+        <div class="content">
+            <table>
+            <h1>ホテル予約</h1>
+                <form method="post" action="/createord" th:object="${ordModel}">
+                    <input type="hidden" name="ordid" th:value="*{ordid}" />
+                    <input type="hidden" name="myid" th:value="*{myid}" />
+
+                    <tr><td><label >琴鈴グループの宿泊ホテルを選択してください。</label></td>
+                        <td><select th:value="*{ordcity}" size="6" id="ordcity" name="ordcity" >
+                            <option>北海道 富良野ホテル</option>
+                            <option>新潟県 佐渡ホテル</option>
+                            <option>滋賀県 近江ホテル</option>
+                            <option>島根県 松江ホテル</option>
+                            <option>鹿児島県 奄美ホテル</option>
+                        </select></td>
+                    </tr>
+
+                    <tr><td><label >ルームタイプを選択してください。</label></td>
+                        <td><select th:value="*{ordtype}" size="4" id="ordtype" name="ordtype" >
+                            <option>シングルルームタイプ</option>
+                            <option>家族向け洋室タイプ</option>
+                            <option>家族向け和室タイプ</option>
+                        </select></td>
+                    </tr>
+                    <tr><td><label >宿泊日 入力例 2019/09/21 </label></td></tr>
+                        <td><input type="text" name="orddate" /></td>
+                    <tr><td><input type="submit"  value="申し込み" class="button"/></td></tr>
+                </form>
+            </table>
+        </div>
+</body>
+</html>
