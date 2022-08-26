@@ -1,3 +1,4 @@
+//メインコントロールクラス
 package com.hotelkotlin
 
 import javax.annotation.PostConstruct
@@ -13,15 +14,16 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
-import java.util.Optionalmport org.springframework.web.bind.annotation.RequestParam
+import java.util.Optional
 
 import com.hotelkotlin.repositories.LogDataRepository
 import com.hotelkotlin.repositories.MyDataRepository
 import com.hotelkotlin.repositories.OrdDataRepository
+import java.util.*
 
 
 @Controller
-class HeloController {
+class HelloController {
 
     @Autowired
     internal var repository: MyDataRepository? = null
@@ -42,6 +44,7 @@ class HeloController {
 
     internal var ret = 0
 
+    //インスタンス生成時に処理
     @PostConstruct
     fun init() {
         //logdata: loginからindexへの移動時の変数を渡すためのデータセット
@@ -52,8 +55,8 @@ class HeloController {
         logrepository!!.saveAndFlush(d1)
     }
 
-    //indexページ:GET
-    @RequestMapping(value = "/", method = [RequestMethod.GET])
+    //メインindexページ処理
+    @RequestMapping(value = ["/"], method = [RequestMethod.GET])
     fun index(
         @ModelAttribute("formModel") mydata: MyData,
         @ModelAttribute("logModel") logdata: LogData,
@@ -78,8 +81,8 @@ class HeloController {
         return mav
     }
 
-    //ログインページ:
-    @RequestMapping(value = "/login", method = [RequestMethod.GET])
+    //ログインページ:GET
+    @RequestMapping(value = ["/login"], method = [RequestMethod.GET])
     fun login(
         mav: ModelAndView): ModelAndView {
         mav.viewName = "login"
@@ -94,7 +97,7 @@ class HeloController {
     }
 
     //ログインページ:POST
-    @RequestMapping(value = "/login", method = [RequestMethod.POST])
+    @RequestMapping(value = ["/login"], method = [RequestMethod.POST])
     fun login2(
         @RequestParam("name") login_name: String,
         @RequestParam("psw") login_psw: String,
@@ -136,7 +139,7 @@ class HeloController {
     }
 
     //アカウント作成ページ: GET
-    @RequestMapping(value = "/create", method = [RequestMethod.GET])
+    @RequestMapping(value = ["/create"], method = [RequestMethod.GET])
     fun create(@ModelAttribute("formModel") mydata: MyData,
                mav: ModelAndView): ModelAndView {
         mav.viewName = "create"
@@ -159,13 +162,14 @@ class HeloController {
     }
 
     //アカウント作成ページ: POST
-    @RequestMapping(value = "/create", method = [RequestMethod.POST])
+    @RequestMapping(value = ["/create"], method = [RequestMethod.POST])
     @Transactional(readOnly = false)
     fun create2(
         @RequestParam("name") login_name: String,
         @RequestParam("psw") login_psw: String,
         @ModelAttribute("logModel") logdata: LogData,
         @ModelAttribute("formModel") @Validated mydata: MyData,
+        // ↓バリデーションチェックの結果は、このBindingResultという引数で取得
         result: BindingResult,
         mav: ModelAndView): ModelAndView {
 
@@ -205,7 +209,7 @@ class HeloController {
     }
 
     //予約ページ: GET
-    @RequestMapping(value = "/createord", method = [RequestMethod.GET])
+    @RequestMapping(value = ["/createord"], method = [RequestMethod.GET])
     fun createord(
         @ModelAttribute("ordModel") orddata: OrdData,
         //@ModelAttribute("formModel") MyData mydata,
@@ -227,7 +231,7 @@ class HeloController {
     }
 
     //予約ページ: POST
-    @RequestMapping(value = "/createord", method = [RequestMethod.POST])
+    @RequestMapping(value = ["/createord"], method = [RequestMethod.POST])
     @Transactional(readOnly = false)
     fun createord2(
         @ModelAttribute("ordModel") orddata: OrdData,
@@ -241,7 +245,7 @@ class HeloController {
     }
 
     //アカウント削除ページ: GET
-    @RequestMapping(value = "/delete/{id}", method = [RequestMethod.GET])
+    @RequestMapping(value = ["/delete/{id}"], method = [RequestMethod.GET])
     fun delete(@PathVariable id: Long,
                mav: ModelAndView): ModelAndView {
         mav.viewName = "delete"
@@ -252,7 +256,7 @@ class HeloController {
     }
 
     //アカウント削除ページ:POST
-    @RequestMapping(value = "/delete", method = [RequestMethod.POST])
+    @RequestMapping(value = ["/delete"], method = [RequestMethod.POST])
     @Transactional(readOnly = false)
     fun remove(@RequestParam id: Long,
                mav: ModelAndView): ModelAndView {
@@ -261,7 +265,7 @@ class HeloController {
     }
 
     //予約削除ページ: GET
-    @RequestMapping(value = "/deleteord/{ordid}", method = [RequestMethod.GET])
+    @RequestMapping(value = ["/deleteord/{ordid}"], method = [RequestMethod.GET])
     fun deleteord(@PathVariable ordid: Long?,
                   mav: ModelAndView): ModelAndView {
         mav.viewName = "deleteord"
@@ -272,7 +276,7 @@ class HeloController {
     }
 
     //予約削除ページ: POST
-    @RequestMapping(value = "/deleteord", method = [RequestMethod.POST])
+    @RequestMapping(value = ["/deleteord"], method = [RequestMethod.POST])
     @Transactional(readOnly = false)
     fun removeord(@RequestParam ordid: Long?,
                   mav: ModelAndView): ModelAndView {
@@ -281,7 +285,7 @@ class HeloController {
     }
 
     //アカウント修正ページ: GET
-    @RequestMapping(value = "/edit", method = [RequestMethod.GET])
+    @RequestMapping(value = ["/edit"], method = [RequestMethod.GET])
     fun edit(@ModelAttribute mydata: MyData,
              mav: ModelAndView): ModelAndView {
         mav.viewName = "edit"
@@ -295,7 +299,7 @@ class HeloController {
     }
 
     //アカウント修正ページ:POST
-    @RequestMapping(value = "/edit", method = [RequestMethod.POST])
+    @RequestMapping(value = ["/edit"], method = [RequestMethod.POST])
     @Transactional(readOnly = false)
     fun edit2(@ModelAttribute mydata: MyData,
               result: BindingResult,
@@ -313,7 +317,7 @@ class HeloController {
     }
 
     //ログアウトページ:GET
-    @RequestMapping(value = "/logout", method = [RequestMethod.GET])
+    @RequestMapping(value = ["/logout"], method = [RequestMethod.GET])
     fun logout(
         @ModelAttribute("formModel") mydata: MyData,
         mav: ModelAndView): ModelAndView {
@@ -322,7 +326,7 @@ class HeloController {
     }
 
     //ログアウトページ:POST
-    @RequestMapping(value = "/logout", method = [RequestMethod.POST])
+    @RequestMapping(value = ["/logout"], method = [RequestMethod.POST])
     @Transactional(readOnly = false)
     fun logout2(@RequestParam("name") login_name: String?,
                 @RequestParam("psw") login_psw: String?,
@@ -339,7 +343,7 @@ class HeloController {
     }
 
     //アカウント一覧ページ:GET
-    @RequestMapping(value = "/list", method = [RequestMethod.GET])
+    @RequestMapping(value = ["/list"], method = [RequestMethod.GET])
     fun list(
         @ModelAttribute("formModel") mydata: MyData,
         mav: ModelAndView): ModelAndView {
@@ -351,7 +355,7 @@ class HeloController {
     }
 
     //アカウント一覧ページ:POST
-    @RequestMapping(value = "/list", method = [RequestMethod.POST])
+    @RequestMapping(value = ["/list"], method = [RequestMethod.POST])
     @Transactional(readOnly = false)
     fun list2(
         @ModelAttribute("formModel") mydata: MyData,
@@ -361,7 +365,7 @@ class HeloController {
     }
 
     //予約リスト表示:GET
-    @RequestMapping(value = "/listord", method = [RequestMethod.GET])
+    @RequestMapping(value = ["/listord"], method = [RequestMethod.GET])
     fun listord(
         @ModelAttribute("ordModel") orddata: OrdData,
         mav: ModelAndView): ModelAndView {
@@ -374,7 +378,7 @@ class HeloController {
     }
 
     //予約リスト表示:POST
-    @RequestMapping(value = "/listord", method = [RequestMethod.POST])
+    @RequestMapping(value = ["/listord"], method = [RequestMethod.POST])
     @Transactional(readOnly = false)
     fun listord2(
         @ModelAttribute("ordModel") orddata: OrdData,

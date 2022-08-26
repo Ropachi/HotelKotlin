@@ -1,3 +1,4 @@
+//個人データモデルリポジトリ
 package com.hotelkotlin.repositories
 
 import org.springframework.data.jpa.repository.JpaRepository
@@ -9,6 +10,9 @@ import com.hotelkotlin.MyData
 //顧客データリポジトリ
 @Repository
 interface MyDataRepository : JpaRepository<MyData, Long> {
+    //個人データを全て検索
     override fun findAll(): List<MyData>
+
+    //個人データをIDで検索
     override fun findById(id: Long): Optional<MyData>
 }

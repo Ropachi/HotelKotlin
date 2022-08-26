@@ -1,3 +1,4 @@
+//オーダー用モデル リポジトリ
 package com.hotelkotlin.repositories
 
 import org.springframework.data.jpa.repository.JpaRepository
@@ -9,7 +10,12 @@ import com.hotelkotlin.OrdData
 //予約データリポジトリ
 @Repository
 interface OrdDataRepository : JpaRepository<OrdData, Long> {
+    //オーダーデータをIDで検索
     fun findByOrdid(ordid: Long?): Optional<OrdData>
+
+    //個人IDで検索
     fun findByMyid(myid: Long?): List<OrdData>
+
+    //オーダーデータをIDで削除
     fun deleteByOrdid(ordid: Long?)
 }

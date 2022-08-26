@@ -1,3 +1,4 @@
+<!--アカウント編集用画面-->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www/thymeleaf.org">
@@ -9,6 +10,7 @@
 </head>
 
 <body>
+<!--ヘッダー部挿入-->
 	<div th:include="header :: headerA"></div>
         <div th:if="${logname} != 'kiOYuT49HiJ8'">
             <h3 th:text="${logname} + '様'"/>
@@ -22,6 +24,7 @@
             </tr>
         </table><br/>
 
+<!--メイン部-->
     <div class="content">
         <h1>アカウント修正</h1>
         <table>

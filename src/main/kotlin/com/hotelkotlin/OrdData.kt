@@ -1,3 +1,4 @@
+//予約データモデル
 package com.hotelkotlin
 
 import javax.persistence.Column

@@ -1,3 +1,4 @@
+<!--ログイン用画面-->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www/thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
@@ -9,9 +10,12 @@
 </head>
 
 <body>
+<!--ヘッダー部挿入-->
 	<div th:include="header :: headerA"></div>
     <td><a th:href="@{/}">Home</a></td>
     <br/>
+
+<!--メイン部-->
     <div class="content">
         <table>
         <h1>ログイン</h1>

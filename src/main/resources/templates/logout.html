@@ -1,3 +1,4 @@
+<!--ログアウト時用画面-->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www/thymeleaf.org">
@@ -9,11 +10,13 @@
 </head>
 
 <body>
+<!--ヘッダー部挿入-->
 	<div th:include="header :: headerA"></div>
         <td><a th:href="@{/login}">ログイン</a></td>
         <td><a th:href="@{/create}">アカウント新規作成</a></td>
     <br/>
 
+<!--メイン部-->
     <div class="content">
         <p>琴鈴グループ会員制ホテル 日本全国の各自然を楽しめるよう全国5箇所に配置したホテルを予約できます。<br></p>
 

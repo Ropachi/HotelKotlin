@@ -1,3 +1,4 @@
+//個人データモデル
 package com.hotelkotlin
 
 import javax.persistence.Column

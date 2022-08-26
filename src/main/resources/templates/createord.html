@@ -1,3 +1,4 @@
+<!--新規予約申し込み用画面-->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www/thymeleaf.org">
@@ -9,6 +10,7 @@
 </head>
 
 <body>
+<!--ヘッダー部挿入-->
 	<div th:include="header :: headerA"></div>
             <h3 th:text="${logname} + '様'"/>
         <table>
@@ -19,6 +21,8 @@
             </tr>
         </table>
     <br/>
+
+<!--メイン部-->
         <div class="content">
             <table>
             <h1>ホテル予約</h1>

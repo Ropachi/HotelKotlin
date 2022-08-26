@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www/thymeleaf.org">
+<head>
+    <title>DeleteCourse</title>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=UTF-8">
+    <link href="../static/css/mystyle.css" th:href="@{/css/mystyle.css}" rel="stylesheet"/>
+</head>
+
+<body>
+    <div class="content">
+        <h1 >Course Delete</h1>
+        <table>
+            <form method="post" action="/deleteord" th:object="${ordModel}">
+                <input type="hidden" name="ordid" th:value="*{ordid}" />
+                <tr><td><p th:text="*{myid}"></p></td></tr>
+                <tr><td><p th:text="*{ordcity}"></p></td></tr>
+                <tr><td><p th:text="*{ordtype}"></p></td></tr>
+                <tr><td><p th:text="*{orddate}"></p></td></tr>
+                <tr><td><input type="submit" value="削除" class="button"/></td></tr>
+            </form>
+        </table>
+    </div>
+</body>
+</html>

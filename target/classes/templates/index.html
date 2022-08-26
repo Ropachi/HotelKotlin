@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www/thymeleaf.org">
+<head>
+    <title>Welcome Page</title>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=UTF-8">
+    <link href="../static/css/mystyle.css" th:href="@{/css/mystyle.css}" rel="stylesheet"/>
+</head>
+
+<body>
+    <img class=imageB src="../static/img/index.jpg"
+    th:src="@{img/index.jpg}"/>
+
+	<div th:include="header :: headerA"></div>
+        <div th:if="${logname} != 'Thb78mLu52' and ${logname} != null">
+            <h3 th:text="*{logname} + '様'"/>
+            <table>
+                <tr>
+                    <td><a th:href="@{/createord}">ホテル予約</a></td>
+                    <td><a th:href="@{/edit}">アカウント修正</a></td>
+                    <td><a th:href="@{/logout}">ログアウト</a></td>
+            </tr>
+        </table>
+        </div>
+        <div th:if="${logname} == 'Thb78mLu52'">
+            <table>
+                <tr>
+                    <td><a th:href="@{/login}">ログイン</a></td>
+                    <td><a th:href="@{/create}">アカウント新規作成</a></td>
+                </tr>
+            </table>
+        </div>
+    <br/>
+
+    <div class="content">
+        <p>琴鈴グループ会員制ホテル 日本全国の各自然を楽しめるよう全国5箇所に配置したホテルを予約できます。<br></p>
+
+        <h3 class="icon">のんびりシングルルームタイプ</h3>
+            <img class=imageA src="../static/img/business.jpg"
+            th:src="@{img/business.jpg}"/>
+            <p class="explain" >お一人様でも120サイズベッドでゆったり。仕事もこなさなければならない方のために広い
+                机でデスクワークも快適な空間を用意しています。</p><br>
+        <h3 class="icon">家族向け洋室タイプ</h3>
+            <img class=imageA src="../static/img/family.jpg"
+            th:src="@{img/family.jpg}"/>
+            <p class="explain" >ご家族向けに複数のベッドを備えた広々とした客室は、わが家にいるようにくつろげる空間です。</p><br>
+        <h3 class="icon">家族向け和室タイプ</h3>
+            <img class=imageA src="../static/img/Wasitu.jpg"
+            th:src="@{img/Wasitu.jpg}"/>
+            <p class="explain" >2名様から5名様までご利用頂ける和室タイプの懐かしい雰囲気のお部屋を用意しています。</p><br>
+    </div>
+</body>
+</html>
