@@ -14,5 +14,6 @@ interface MyDataRepository : JpaRepository<MyData, Long> {
     override fun findAll(): List<MyData>
 
     //個人データをIDで検索
+                                     //OptionalでNullable型として扱う。
     override fun findById(id: Long): Optional<MyData>
 }

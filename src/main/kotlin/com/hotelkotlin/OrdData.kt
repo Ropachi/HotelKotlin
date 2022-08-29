@@ -18,6 +18,7 @@ class OrdData {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
+                //型宣言に?を付けnullable宣言
     var ordid: Long? = null
 
     @Column

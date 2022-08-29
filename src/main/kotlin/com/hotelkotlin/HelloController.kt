@@ -21,16 +21,14 @@ import com.hotelkotlin.repositories.MyDataRepository
 import com.hotelkotlin.repositories.OrdDataRepository
 import java.util.*
 
-
+//画面遷移用のコントローラーとして定義
 @Controller
 class HelloController {
-
+    //クラスのインスタンスを使用できるように設定。
     @Autowired
     internal var repository: MyDataRepository? = null
-
     @Autowired
     internal var ordrepository: OrdDataRepository? = null
-
     @Autowired
     internal var logrepository: LogDataRepository? = null
 
@@ -39,12 +37,13 @@ class HelloController {
     internal var login_name: String? = null
     internal var login_psw: String? = null
 
+    //EntityManagerのBeanを取得してフィールドに割り当てる
     @PersistenceContext
     internal var entityManager: EntityManager? = null  //field定義
 
     internal var ret = 0
 
-    //インスタンス生成時に処理
+    //インスタンス生成時に処理することを指定。
     @PostConstruct
     fun init() {
         //logdata: loginからindexへの移動時の変数を渡すためのデータセット
@@ -52,6 +51,8 @@ class HelloController {
         d1.logid = 1.toLong()
         d1.logname = "Thb78mLu52"
         d1.logpsw = "Uy75TvE9NpO6J"
+        //SQLを実行
+                //!!でNullable型を強制的に通常の型として扱うようにする。
         logrepository!!.saveAndFlush(d1)
     }
 
@@ -73,6 +74,7 @@ class HelloController {
 
         //コース申し込み等の際の判断のための login_id をここで設定。
         if (login_name != null && login_psw != null) {
+                                          //!!でNullable型を強制的に通常の型として扱うようにする。
             val data2 = findByNameAndPsw(login_name!!, login_psw!!)
             if (data2 != null) {
                 login_id = data2.get().id
@@ -125,6 +127,7 @@ class HelloController {
             } else {
                 ret = 2  //該当するデータがなかったのでアウト
             }
+        //エラー処理
         } catch (e: Exception) {
             ret = 2  //何らかのエラー発生があるとアウト
         } finally {
@@ -168,8 +171,9 @@ class HelloController {
         @RequestParam("name") login_name: String,
         @RequestParam("psw") login_psw: String,
         @ModelAttribute("logModel") logdata: LogData,
+                                     //自動的にバリデーション
         @ModelAttribute("formModel") @Validated mydata: MyData,
-        // ↓バリデーションチェックの結果は、このBindingResultという引数で取得
+        //バリデーションチェックの結果は、このBindingResultという引数で取得
         result: BindingResult,
         mav: ModelAndView): ModelAndView {
 
@@ -184,6 +188,7 @@ class HelloController {
                 res = ModelAndView("redirect:/")
                 ret = 2     //OK 該当既存データとは重複してない。
             }
+        //エラー処理
         } catch (e: Exception) {
             ret = 1
         }
@@ -191,6 +196,7 @@ class HelloController {
         //validation
         // ↓この変数resultにエラー結果が入っている。
         if (result.hasErrors()) {
+                           //!!でNullable型を強制的に通常の型として扱うようにする。
             val list = repository!!.findAll()
             mav.addObject("datalist", list)
             res = mav
@@ -220,6 +226,7 @@ class HelloController {
 
         //Home等ボタン表示内容設定のために logname を設定
         var logname = "Thb78mLu52"
+                            //!!でNullable型を強制的に通常の型として扱うようにする。
         val list = logrepository!!.findByLogid(1.toLong())
         if (list.get().logname !== "Thb78mLu52") {
             logname = list.get().logname.toString()
@@ -250,6 +257,7 @@ class HelloController {
                mav: ModelAndView): ModelAndView {
         mav.viewName = "delete"
         mav.addObject("title", "アカウント削除.")
+                       //!!でNullable型を強制的に通常の型として扱うようにする。
         val data = repository!!.findById(id)
         mav.addObject("formModel", data.get())
         return mav
@@ -260,6 +268,7 @@ class HelloController {
     @Transactional(readOnly = false)
     fun remove(@RequestParam id: Long,
                mav: ModelAndView): ModelAndView {
+            //!!でNullable型を強制的に通常の型として扱うようにする。
         repository!!.deleteById(id)
         return ModelAndView("redirect:/")
     }
@@ -270,6 +279,7 @@ class HelloController {
                   mav: ModelAndView): ModelAndView {
         mav.viewName = "deleteord"
         mav.addObject("title", "Order Delete")
+                        //!!でNullable型を強制的に通常の型として扱うようにする。
         val data = ordrepository!!.findByOrdid(ordid)
         mav.addObject("ordModel", data.get())
         return mav
@@ -307,6 +317,7 @@ class HelloController {
         var res: ModelAndView? = null
 
         if (!result.hasErrors()) {  //修正入力にエラーがあったかどうかチェック
+            //SQLを実行
             repository!!.saveAndFlush(mydata)
             res = ModelAndView("redirect:/edit")
         } else {
@@ -360,6 +371,7 @@ class HelloController {
     fun list2(
         @ModelAttribute("formModel") mydata: MyData,
         mav: ModelAndView): ModelAndView {
+        //SQLを実行
         repository!!.saveAndFlush(mydata)
         return ModelAndView("redirect:/")
     }
@@ -383,6 +395,7 @@ class HelloController {
     fun listord2(
         @ModelAttribute("ordModel") orddata: OrdData,
         mav: ModelAndView): ModelAndView {
+        //SQLを実行
         ordrepository!!.saveAndFlush(orddata)
         return ModelAndView("redirect:/")
     }
@@ -390,6 +403,7 @@ class HelloController {
     //顧客データ保存
     fun update(mydata: MyData,
                mav: ModelAndView): ModelAndView {
+        //SQLを実行
         repository!!.saveAndFlush(mydata)
         return mav
     }
@@ -397,6 +411,7 @@ class HelloController {
     //予約データ保存
     fun updateord(orddata: OrdData,
                   mav: ModelAndView): ModelAndView {
+        //SQLを実行
         ordrepository!!.saveAndFlush(orddata)
         return mav
     }
@@ -404,7 +419,8 @@ class HelloController {
     //変数データ保存
     fun updatelog(logdata: LogData,
                   mav: ModelAndView): ModelAndView {
-        logrepository!!.saveAndFlush(logdata)
+        //SQLを実行
+logrepository!!.saveAndFlush(logdata)
         return mav
     }
 
@@ -417,6 +433,7 @@ class HelloController {
     }
 
     //顧客データから 名前とパスワードのセットでレコード検索
+                                                       //OptionalでNullable型として扱う。
     fun findByNameAndPsw(sname: String, spsw: String): Optional<MyData> {
         val qstr = "SELECT c FROM MyData c WHERE c.name = :fname and c.psw = :fpsw"
         val query = entityManager!!.createQuery<MyData>(qstr, MyData::class.java)

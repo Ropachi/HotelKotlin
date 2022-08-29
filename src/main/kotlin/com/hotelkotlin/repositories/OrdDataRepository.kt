@@ -11,6 +11,8 @@ import com.hotelkotlin.OrdData
 @Repository
 interface OrdDataRepository : JpaRepository<OrdData, Long> {
     //オーダーデータをIDで検索
+                           //型宣言に?を付けnullable宣言
+                                    //OptionalでNullable型として扱う。
     fun findByOrdid(ordid: Long?): Optional<OrdData>
 
     //個人IDで検索

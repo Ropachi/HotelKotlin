@@ -1,3 +1,4 @@
+<!--新規アカウント作成用画面-->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www/thymeleaf.org">
@@ -9,6 +10,7 @@
 </head>
 
 <body>
+<!--ヘッダー部挿入-->
 	<div th:include="header :: headerA"></div>
         <table>
             <tr>
@@ -17,6 +19,7 @@
         </table>
     <br/>
 
+<!--メイン部-->
     <div class="content">
         <p th:text="${msg}" id="error"></p>
         <table>

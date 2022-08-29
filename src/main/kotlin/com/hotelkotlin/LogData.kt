@@ -12,6 +12,7 @@ import javax.persistence.Table
 class LogData {
     @Id
     @Column
+              //型宣言に?を付けnullable宣言
     var logid: Long? = null
     @Column
     var logname: String? = null

@@ -24,6 +24,7 @@ class MyData {
 
     @Column(nullable = false)
     @NotEmpty(message = "名前を入力してください。")
+              //型宣言に?を付けnullable宣言
     var name: String? = null
 
     @Column(nullable = false)
@@ -35,6 +36,7 @@ class MyData {
     var mail: String? = null
 
     //login時、名前とパスワード入力時用変数セット
+                  //型宣言に?を付けnullable宣言
     var login_id: Long? = null
     var login_name: String? = null
     var login_psw: String? = null
