@@ -52,29 +52,33 @@ class HelloController {
         d1.logname = "Thb78mLu52"
         d1.logpsw = "Uy75TvE9NpO6J"
         //SQLを実行
-                //!!でNullable型を強制的に通常の型として扱うようにする。
+                   //↓!!でNullable型を強制的に通常の型として扱うようにする。
         logrepository!!.saveAndFlush(d1)
     }
 
     //メインindexページ処理
     @RequestMapping(value = ["/"], method = [RequestMethod.GET])
     fun index(
+        //↓テンプレートで利用する値を設定
         @ModelAttribute("formModel") mydata: MyData,
         @ModelAttribute("logModel") logdata: LogData,
+                           //↓上記で設定したデータでテンプレートを利用。
         mav: ModelAndView): ModelAndView {
         mav.viewName = "index"
 
         //Home等ボタン表示内容設定のために logname を設定
         var logname: String = "Thb78mLu52"
+                              //↓!!でNullable型を強制的に通常の型として扱うようにする。
         val list = logrepository!!.findByLogid(1.toLong())
         if (list.get().logname !== "Thb78mLu52") {
             logname = list.get().logname.toString()
+                //↓値を保管する。
             mav.addObject("logname", logname)
         }
 
         //コース申し込み等の際の判断のための login_id をここで設定。
         if (login_name != null && login_psw != null) {
-                                          //!!でNullable型を強制的に通常の型として扱うようにする。
+                                                 //↓!!でNullable型を強制的に通常の型として扱うようにする。
             val data2 = findByNameAndPsw(login_name!!, login_psw!!)
             if (data2 != null) {
                 login_id = data2.get().id
@@ -86,6 +90,7 @@ class HelloController {
     //ログインページ:GET
     @RequestMapping(value = ["/login"], method = [RequestMethod.GET])
     fun login(
+                             //↓上記で設定したデータでテンプレートを利用。
         mav: ModelAndView): ModelAndView {
         mav.viewName = "login"
         var mes = ""
@@ -93,7 +98,7 @@ class HelloController {
             mes = ""
         if (ret == 2)
             mes = "お名前あるいはパスワードが一致しません"
-
+            //↓値を保管する。
         mav.addObject("msg", mes)
         return mav
     }
@@ -101,10 +106,14 @@ class HelloController {
     //ログインページ:POST
     @RequestMapping(value = ["/login"], method = [RequestMethod.POST])
     fun login2(
+        //↓パラメータを取得(フォームnameの値をlogin_nameに渡す)
         @RequestParam("name") login_name: String,
+        //↓パラメータを取得(フォームpswの値をlogin_pswに渡す)
         @RequestParam("psw") login_psw: String,
+        //↓テンプレートで利用する値を設定
         @ModelAttribute("formModel") mydata: MyData,
         @ModelAttribute("logModel") logdata: LogData,
+                            //↓上記で設定したデータでテンプレートを利用。
         mav: ModelAndView): ModelAndView {
         var login_name = login_name
         var login_psw = login_psw
@@ -134,16 +143,20 @@ class HelloController {
         }
         return if (ret == 1) {
             //ログインできればindexページへ移動
+               //↓上記で設定したデータでテンプレートを利用。
             ModelAndView("redirect:/")
         } else {
             //ログインできなければ再度入力のため留まる
+              //↓上記で設定したデータでテンプレートを利用。
             ModelAndView("redirect:/login")
         }
     }
 
     //アカウント作成ページ: GET
     @RequestMapping(value = ["/create"], method = [RequestMethod.GET])
+                //↓テンプレートで利用する値を設定
     fun create(@ModelAttribute("formModel") mydata: MyData,
+                                    //↓上記で設定したデータでテンプレートを利用。
                mav: ModelAndView): ModelAndView {
         mav.viewName = "create"
         var mes = ""
@@ -160,6 +173,7 @@ class HelloController {
             3 -> mes = "入力エラーがありました!"
         }
         println("create:GET mes=$mes")
+            //↓値を保管する。
         mav.addObject("msg", mes)
         return mav
     }
@@ -168,13 +182,17 @@ class HelloController {
     @RequestMapping(value = ["/create"], method = [RequestMethod.POST])
     @Transactional(readOnly = false)
     fun create2(
+        //↓パラメータを取得(フォームnameの値をlogin_nameに渡す)
         @RequestParam("name") login_name: String,
+        //↓パラメータを取得(フォームpswの値をlogin_pswに渡す)
         @RequestParam("psw") login_psw: String,
+        //↓テンプレートで利用する値を設定
         @ModelAttribute("logModel") logdata: LogData,
-                                     //自動的にバリデーション
+                                     //↓自動的にバリデーション
         @ModelAttribute("formModel") @Validated mydata: MyData,
         //バリデーションチェックの結果は、このBindingResultという引数で取得
         result: BindingResult,
+                            //↓上記で設定したデータでテンプレートを利用。
         mav: ModelAndView): ModelAndView {
 
         //既存の名前とパスワードのセットと重複していないかチェック
@@ -196,8 +214,9 @@ class HelloController {
         //validation
         // ↓この変数resultにエラー結果が入っている。
         if (result.hasErrors()) {
-                           //!!でNullable型を強制的に通常の型として扱うようにする。
+                                //↓!!でNullable型を強制的に通常の型として扱うようにする。
             val list = repository!!.findAll()
+                //↓値を保管する。
             mav.addObject("datalist", list)
             res = mav
             ret = 3  //Error
@@ -209,6 +228,7 @@ class HelloController {
             logdata.logname = login_name
             logdata.logpsw = login_psw
             updatelog(logdata, mav)
+                    //↓上記で設定したデータでテンプレートを利用。
             res = ModelAndView("redirect:/")
         }
         return res
@@ -217,19 +237,23 @@ class HelloController {
     //予約ページ: GET
     @RequestMapping(value = ["/createord"], method = [RequestMethod.GET])
     fun createord(
+        //↓テンプレートで利用する値を設定
         @ModelAttribute("ordModel") orddata: OrdData,
         //@ModelAttribute("formModel") MyData mydata,
         @ModelAttribute("logModel") logdata: LogData,
+                            //↓上記で設定したデータでテンプレートを利用。
         mav: ModelAndView): ModelAndView {
         mav.viewName = "createord"
+            //↓値を保管する。
         mav.addObject("title", "CreateOrd")
 
         //Home等ボタン表示内容設定のために logname を設定
         var logname = "Thb78mLu52"
-                            //!!でNullable型を強制的に通常の型として扱うようにする。
+                              //↓!!でNullable型を強制的に通常の型として扱うようにする。
         val list = logrepository!!.findByLogid(1.toLong())
         if (list.get().logname !== "Thb78mLu52") {
             logname = list.get().logname.toString()
+                //↓値を保管する。
             mav.addObject("logname", logname)
         } else {
             logname = "Thb78mLu52"
@@ -241,24 +265,32 @@ class HelloController {
     @RequestMapping(value = ["/createord"], method = [RequestMethod.POST])
     @Transactional(readOnly = false)
     fun createord2(
+        //↓テンプレートで利用する値を設定
         @ModelAttribute("ordModel") orddata: OrdData,
+                            //↓上記で設定したデータでテンプレートを利用。
         mav: ModelAndView): ModelAndView {
         //予約用データセットへ顧客Idをセット
         if (login_id != null) {
             orddata.myid = login_id
         }
-        updateord(orddata, mav) //データを保存
+        //データを保存
+        updateord(orddata, mav)
+                //↓上記で設定したデータでテンプレートを利用。
         return ModelAndView("redirect:/")
     }
 
     //アカウント削除ページ: GET
     @RequestMapping(value = ["/delete/{id}"], method = [RequestMethod.GET])
+               //↓パラメータを受け取るという定義
     fun delete(@PathVariable id: Long,
+                                    //↓上記で設定したデータでテンプレートを利用。
                mav: ModelAndView): ModelAndView {
         mav.viewName = "delete"
+            //↓値を保管する。
         mav.addObject("title", "アカウント削除.")
-                       //!!でNullable型を強制的に通常の型として扱うようにする。
+                           //↓!!でNullable型を強制的に通常の型として扱うようにする。
         val data = repository!!.findById(id)
+            //↓値を保管する。
         mav.addObject("formModel", data.get())
         return mav
     }
@@ -266,21 +298,26 @@ class HelloController {
     //アカウント削除ページ:POST
     @RequestMapping(value = ["/delete"], method = [RequestMethod.POST])
     @Transactional(readOnly = false)
+                //↓パラメータを取得
     fun remove(@RequestParam id: Long,
                mav: ModelAndView): ModelAndView {
-            //!!でNullable型を強制的に通常の型として扱うようにする。
+                //↓!!でNullable型を強制的に通常の型として扱うようにする。
         repository!!.deleteById(id)
+                  //↓上記で設定したデータでテンプレートを利用。
         return ModelAndView("redirect:/")
     }
 
     //予約削除ページ: GET
     @RequestMapping(value = ["/deleteord/{ordid}"], method = [RequestMethod.GET])
+                  //↓パラメータを受け取るという定義
     fun deleteord(@PathVariable ordid: Long?,
                   mav: ModelAndView): ModelAndView {
         mav.viewName = "deleteord"
+            //↓値を保管する。
         mav.addObject("title", "Order Delete")
-                        //!!でNullable型を強制的に通常の型として扱うようにする。
+                              //↓!!でNullable型を強制的に通常の型として扱うようにする。
         val data = ordrepository!!.findByOrdid(ordid)
+            //↓値を保管する。
         mav.addObject("ordModel", data.get())
         return mav
     }
@@ -288,21 +325,26 @@ class HelloController {
     //予約削除ページ: POST
     @RequestMapping(value = ["/deleteord"], method = [RequestMethod.POST])
     @Transactional(readOnly = false)
+                  //↓パラメータを取得
     fun removeord(@RequestParam ordid: Long?,
                   mav: ModelAndView): ModelAndView {
         ordrepository!!.deleteByOrdid(ordid)
+                //↓上記で設定したデータでテンプレートを利用。
         return ModelAndView("redirect:/")
     }
 
     //アカウント修正ページ: GET
     @RequestMapping(value = ["/edit"], method = [RequestMethod.GET])
+              //↓テンプレートで利用する値を設定
     fun edit(@ModelAttribute mydata: MyData,
              mav: ModelAndView): ModelAndView {
         mav.viewName = "edit"
+            //↓値を保管する。
         mav.addObject("title", "アカウント修正.")
 
         //if (login_id != null) {
         val data = login_id?.let { repository?.findById(it) }
+            //↓値を保管する。
         mav.addObject("formModel", data?.get())
         //}
         return mav
@@ -311,6 +353,7 @@ class HelloController {
     //アカウント修正ページ:POST
     @RequestMapping(value = ["/edit"], method = [RequestMethod.POST])
     @Transactional(readOnly = false)
+               //↓テンプレートで利用する値を設定
     fun edit2(@ModelAttribute mydata: MyData,
               result: BindingResult,
               mav: ModelAndView): ModelAndView {
@@ -319,9 +362,12 @@ class HelloController {
         if (!result.hasErrors()) {  //修正入力にエラーがあったかどうかチェック
             //SQLを実行
             repository!!.saveAndFlush(mydata)
+                    //↓上記で設定したデータでテンプレートを利用。
             res = ModelAndView("redirect:/edit")
         } else {
+                //↓値を保管する。
             mav.addObject("msg", "Error is occured!")
+                    //↓上記で設定したデータでテンプレートを利用。
             res = ModelAndView("redirect:/edit")
         }
         return res
@@ -330,6 +376,7 @@ class HelloController {
     //ログアウトページ:GET
     @RequestMapping(value = ["/logout"], method = [RequestMethod.GET])
     fun logout(
+        //↓テンプレートで利用する値を設定
         @ModelAttribute("formModel") mydata: MyData,
         mav: ModelAndView): ModelAndView {
         mav.viewName = "logout"
@@ -339,8 +386,11 @@ class HelloController {
     //ログアウトページ:POST
     @RequestMapping(value = ["/logout"], method = [RequestMethod.POST])
     @Transactional(readOnly = false)
+                //↓パラメータを取得(フォームnameの値をlogin_nameに渡す)
     fun logout2(@RequestParam("name") login_name: String?,
+                //↓パラメータを取得(フォームpswの値をlogin_pswに渡す)
                 @RequestParam("psw") login_psw: String?,
+                 //↓テンプレートで利用する値を設定
                 @ModelAttribute("formModel") mydata: MyData,
                 mav: ModelAndView): ModelAndView {
         var login_name = login_name
@@ -350,17 +400,21 @@ class HelloController {
         login_name = null
         login_psw = null
         val logname = "Thb78mLu52"
+                //↓上記で設定したデータでテンプレートを利用。
         return ModelAndView("redirect:/")
     }
 
     //アカウント一覧ページ:GET
     @RequestMapping(value = ["/list"], method = [RequestMethod.GET])
     fun list(
+        //↓テンプレートで利用する値を設定
         @ModelAttribute("formModel") mydata: MyData,
         mav: ModelAndView): ModelAndView {
         mav.viewName = "list"
+            //↓値を保管する。
         mav.addObject("msg", "This is Data List.")
         val list = repository!!.findAll()
+            //↓値を保管する。
         mav.addObject("datalist", list)
         return mav
     }
@@ -369,22 +423,27 @@ class HelloController {
     @RequestMapping(value = ["/list"], method = [RequestMethod.POST])
     @Transactional(readOnly = false)
     fun list2(
+        //↓テンプレートで利用する値を設定
         @ModelAttribute("formModel") mydata: MyData,
         mav: ModelAndView): ModelAndView {
         //SQLを実行
         repository!!.saveAndFlush(mydata)
+                //↓上記で設定したデータでテンプレートを利用。
         return ModelAndView("redirect:/")
     }
 
     //予約リスト表示:GET
     @RequestMapping(value = ["/listord"], method = [RequestMethod.GET])
     fun listord(
+        //↓テンプレートで利用する値を設定
         @ModelAttribute("ordModel") orddata: OrdData,
         mav: ModelAndView): ModelAndView {
         mav.viewName = "listord"
+            //↓値を保管する。
         mav.addObject("msg", "This is Order List.")
         val list = ordrepository!!.findAll()
         //リスト表示用にデータを渡す。
+            //↓値を保管する。
         mav.addObject("datalist", list)
         return mav
     }
@@ -393,10 +452,12 @@ class HelloController {
     @RequestMapping(value = ["/listord"], method = [RequestMethod.POST])
     @Transactional(readOnly = false)
     fun listord2(
+        //↓テンプレートで利用する値を設定
         @ModelAttribute("ordModel") orddata: OrdData,
         mav: ModelAndView): ModelAndView {
         //SQLを実行
         ordrepository!!.saveAndFlush(orddata)
+                //↓上記で設定したデータでテンプレートを利用。
         return ModelAndView("redirect:/")
     }
 
