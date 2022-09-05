@@ -1,4 +1,3 @@
-//起動アプリケーション
 package com.hotelkotlin
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
